@@ -1,0 +1,93 @@
+import openai
+
+def parse_resume_to_json(resume_text):
+    prompt = f"""
+    Here is my resume:
+
+    {resume_text}
+
+    Please parse the resume content into the following JSON format:
+
+    {{
+      "name": "",
+      "contactInformation": {{
+        "email": "",
+        "phone": "",
+        "address": ""
+      }},
+      "education": [
+        {{
+          "degree": "",
+          "fieldOfStudy": "",
+          "institution": "",
+          "graduationYear": ""
+        }}
+      ],
+      "experience": [
+        {{
+          "jobTitle": "",
+          "company": "",
+          "location": "",
+          "startDate": "",
+          "endDate": "",
+          "responsibilities": [
+            ""
+          ]
+        }}
+      ],
+      "skills": [
+        ""
+      ],
+      "certifications": [
+        {{
+          "certificationName": "",
+          "issuingOrganization": "",
+          "issueDate": ""
+        }}
+      ],
+      "projects": [
+        {{
+          "projectTitle": "",
+          "description": "",
+          "technologiesUsed": [
+            ""
+          ]
+        }}
+      ]
+    }}
+    """
+    response = openai.Completion.create(
+      engine="davinci-codex",
+      prompt=prompt,
+      max_tokens=1500
+    )
+
+    return response.choices[0].text.strip()
+
+# Example usage
+resume_text = """
+John Doe
+Email: john.doe@example.com
+Phone: (123) 456-7890
+Address: 123 Main St, Anytown, USA
+
+Education:
+B.Sc. in Computer Science, University of Example, 2022
+
+Experience:
+Software Engineer, ExampleCorp, Anytown, USA, Jan 2023 - Present
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+
+Skills:
+Python, Java, JavaScript, SQL
+
+Certifications:
+AWS Certified Solutions Architect, Amazon Web Services, 2023
+
+Projects:
+Personal Website, Developed a personal portfolio website using HTML, CSS, and JavaScript.
+"""
+
+parsed_json = parse_resume_to_json(resume_text)
+print(parsed_json)
